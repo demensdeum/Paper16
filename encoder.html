@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper16 Encoder</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        input[type="file"] {
+            display: block;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #resultContainer {
+            margin-top: 20px;
+            border-top: 1px solid #ccc;
+            padding-top: 20px;
+        }
+        #resultText {
+            width: 100%;
+            height: 200px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            box-sizing: border-box;
+            background-color: #ecf0f1;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: monospace;
+        }
+        .message {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Paper16 Encoder</h1>
+        <p>This tool uses **Paper16 encoding** to convert a file's binary data into a text string.</p>
+        <p>Each byte from your file is read and represented by two hexadecimal characters. This is a common and efficient way to encode binary data into a human-readable format.</p>
+
+        <input type="file" id="fileInput">
+        <button onclick="processFile()">Encode File</button>
+
+        <div class="message" id="statusMessage"></div>
+
+        <div id="resultContainer">
+            <h2>Encoded Output:</h2>
+            <textarea id="resultText" readonly></textarea>
+        </div>
+    </div>
+
+    <script>
+        function processFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            const resultText = document.getElementById('resultText');
+            const statusMessage = document.getElementById('statusMessage');
+
+            // Clear previous results and messages
+            resultText.value = '';
+            statusMessage.style.display = 'none';
+
+            if (!file) {
+                showMessage('Please select a file first.', 'error');
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+                const arrayBuffer = event.target.result;
+                const byteArray = new Uint8Array(arrayBuffer);
+                let hexString = '';
+
+                for (let i = 0; i < byteArray.length; i++) {
+                    const byte = byteArray[i];
+                    hexString += byte.toString(16).padStart(2, '0');
+                }
+
+                resultText.value = hexString;
+                showMessage('File successfully encoded using Paper16.', 'success');
+            };
+
+            reader.onerror = function() {
+                showMessage('An error occurred while reading the file.', 'error');
+            };
+
+            reader.readAsArrayBuffer(file);
+        }
+
+        function showMessage(message, type) {
+            const statusMessage = document.getElementById('statusMessage');
+            statusMessage.textContent = message;
+            statusMessage.className = `message ${type}`;
+            statusMessage.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
+
