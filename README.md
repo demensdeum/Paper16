@@ -46,5 +46,10 @@ This advanced decoder uses **Tesseract.js** to perform Optical Character Recogni
 Simply download or clone this repository and open any of the `.html` files in your web browser.
 
 * To **encode** a file, open `encoder.html` and select a file.
+https://demensdeum.com/software/paper16/encoder.html
+
 * To **decode** a text string, open `decoder.html` and paste your text.
-* To **decode** from an image, open `decoder-ocr.html` and select your image file.
+https://demensdeum.com/software/paper16/decoder.html
+
+* To **decode** from an image, open `decoderOCR.html` and select your image file.
+https://demensdeum.com/software/paper16/decoderOCR.html
